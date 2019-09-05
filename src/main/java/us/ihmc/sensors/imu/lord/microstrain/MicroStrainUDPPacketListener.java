@@ -19,17 +19,17 @@ public class MicroStrainUDPPacketListener implements Runnable
    private final static Logger log = Logger.getLogger(MicroStrainUDPPacketListener.class.getName());
 
    private static final byte ADAPTIVE_KALMAN_FILTERED_IMU_PACKET = (byte) 0x82;
-   private static final byte ORIGINAL_MIP_IMU_PACKET = (byte) 0x80;
+   private static final byte CF_MIP_IMU_PACKET = (byte) 0x80;
 
    private static final byte EKF_ESTIMATED_LINEAR_ACCELERATION_DESCRIPTOR = 0x0D;
    private static final byte EKF_ESTIMATED_ANGULAR_RATE_DESCRIPTOR = 0x0E;
    private static final byte EKF_MATRIX_DESCRIPTOR = 0x04;
    private static final byte EKF_QUATERNION_DESCRIPTOR = 0x03;
 
-   private static final byte ORIGINAL_ESTIMATED_LINEAR_ACCELERATION_DESCRIPTOR = 0x04;
-   private static final byte ORIGINAL_ESTIMATED_ANGULAR_RATE_DESCRIPTOR = 0x05;
-   private static final byte ORIGINAL_MATRIX_DESCRIPTOR = 0x09;
-   private static final byte ORIGINAL_QUATERNION_DESCRIPTOR = 0x0A;
+   private static final byte CF_ESTIMATED_LINEAR_ACCELERATION_DESCRIPTOR = 0x04;
+   private static final byte CF_ESTIMATED_ANGULAR_RATE_DESCRIPTOR = 0x05;
+   private static final byte CF_MATRIX_DESCRIPTOR = 0x09;
+   private static final byte CF_QUATERNION_DESCRIPTOR = 0x0A;
 
    private DatagramChannel receiveChannel;
    private volatile boolean requestStop = false;
@@ -79,17 +79,17 @@ public class MicroStrainUDPPacketListener implements Runnable
          int descriptor = buffer.get();
          switch (descriptor)
          {
-         case ORIGINAL_MATRIX_DESCRIPTOR:
+         case CF_MATRIX_DESCRIPTOR:
             data.setOrientationMatrix(buffer.getFloat(), buffer.getFloat(), buffer.getFloat(), buffer.getFloat(), buffer.getFloat(), buffer.getFloat(),
                                       buffer.getFloat(), buffer.getFloat(), buffer.getFloat());
             break;
-         case ORIGINAL_QUATERNION_DESCRIPTOR:
+         case CF_QUATERNION_DESCRIPTOR:
             data.setQuaternion(buffer.getFloat(), buffer.getFloat(), buffer.getFloat(), buffer.getFloat());
             break;
-         case ORIGINAL_ESTIMATED_LINEAR_ACCELERATION_DESCRIPTOR:
+         case CF_ESTIMATED_LINEAR_ACCELERATION_DESCRIPTOR:
             data.setLinearAcceleration(buffer.getFloat(), buffer.getFloat(), buffer.getFloat());
             break;
-         case ORIGINAL_ESTIMATED_ANGULAR_RATE_DESCRIPTOR:
+         case CF_ESTIMATED_ANGULAR_RATE_DESCRIPTOR:
             data.setAngularRate(buffer.getFloat(), buffer.getFloat(), buffer.getFloat());
             break;
          default:
@@ -187,7 +187,7 @@ public class MicroStrainUDPPacketListener implements Runnable
             case ADAPTIVE_KALMAN_FILTERED_IMU_PACKET:
                readKalmanFilteredPacketFields(receiveBuffer);
                break;
-            case ORIGINAL_MIP_IMU_PACKET:
+            case CF_MIP_IMU_PACKET:
                readOriginalMIPPacketFields(receiveBuffer);
                break;
             default:
