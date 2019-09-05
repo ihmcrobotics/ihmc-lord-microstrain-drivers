@@ -29,6 +29,7 @@ public class MicroStrainUDPPacketListener implements Runnable
    private static final byte CF_ESTIMATED_LINEAR_ACCELERATION_DESCRIPTOR = 0x04;
    private static final byte CF_ESTIMATED_ANGULAR_RATE_DESCRIPTOR = 0x05;
    private static final byte CF_MATRIX_DESCRIPTOR = 0x09;
+   private static final byte CF_NORTH_VECTOR_DESCRIPTOR = 0x10;
    private static final byte CF_QUATERNION_DESCRIPTOR = 0x0A;
 
    private DatagramChannel receiveChannel;
@@ -92,6 +93,8 @@ public class MicroStrainUDPPacketListener implements Runnable
          case CF_ESTIMATED_ANGULAR_RATE_DESCRIPTOR:
             data.setAngularRate(buffer.getFloat(), buffer.getFloat(), buffer.getFloat());
             break;
+         case CF_NORTH_VECTOR_DESCRIPTOR:
+            data.setGeomagneticNorthVector(buffer.getFloat(), buffer.getFloat(), buffer.getFloat());
          default:
             log.warning("Unknown field " + Integer.toHexString(descriptor));
             buffer.position(buffer.position() + fieldLength);
