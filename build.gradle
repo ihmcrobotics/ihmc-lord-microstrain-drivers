@@ -1,0 +1,14 @@
+plugins {
+   id("us.ihmc.ihmc-build") version "0.16.6"
+   id("us.ihmc.ihmc-ci") version "4.25"
+   id("us.ihmc.ihmc-cd") version "0.2"
+}
+
+ihmc {
+   group = "us.ihmc"
+   version = "0.1.0"
+   openSource = true
+
+   configureDependencyResolution()
+   configurePublications()
+}
