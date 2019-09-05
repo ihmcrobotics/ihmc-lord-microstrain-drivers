@@ -12,3 +12,7 @@ ihmc {
    configureDependencyResolution()
    configurePublications()
 }
+
+mainDependencies {
+   api("us.ihmc:euclid:0.12.0")
+}
