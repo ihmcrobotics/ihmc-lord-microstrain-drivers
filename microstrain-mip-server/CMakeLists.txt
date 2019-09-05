@@ -1,4 +1,4 @@
-project(ValkyrieHardwareDrivers)
+project(IHMCMicroStrainDrivers)
 cmake_minimum_required(VERSION 2.6)
 
 #IF(CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
