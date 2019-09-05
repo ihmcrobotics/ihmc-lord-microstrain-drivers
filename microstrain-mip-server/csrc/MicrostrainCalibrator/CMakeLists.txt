@@ -1,0 +1,5 @@
+project(ValkyrieHardwareDrivers)
+
+add_executable(MicrostrainCalibrator MicrostrainCalibrator.cpp)
+target_link_libraries(MicrostrainCalibrator rt)
+install(TARGETS MicrostrainCalibrator RUNTIME DESTINATION bin)
