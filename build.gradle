@@ -2,6 +2,8 @@ plugins {
    id("us.ihmc.ihmc-build") version "0.16.6"
    id("us.ihmc.ihmc-ci") version "4.25"
    id("us.ihmc.ihmc-cd") version "0.2"
+
+   id 'application'
 }
 
 ihmc {
@@ -21,4 +23,12 @@ mainDependencies {
 visualizersDependencies {
    compile ihmc.sourceSetProject("main")
    compile("us.ihmc:simulation-construction-set:0.12.15")
+}
+
+application {
+   mainClassName = 'us.ihmc.visualizers.sensors.imu.lord.microstrain.MicroStrain3DMVisualizer'
+}
+
+tasks.named('run', JavaExec) {
+   classpath += ihmc.sourceSet("visualizers").runtimeClasspath
 }
