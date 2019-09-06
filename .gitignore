@@ -18,6 +18,7 @@
 */Configurations
 
 # directories to always ignore
+**/.vscode
 **/build
 **/classes
 **/bin
