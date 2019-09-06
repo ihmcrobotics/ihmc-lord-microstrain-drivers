@@ -2,11 +2,13 @@ package us.ihmc.visualizers.sensors.imu.lord.microstrain;
 
 import us.ihmc.commons.thread.ThreadTools;
 import us.ihmc.euclid.matrix.RotationMatrix;
+import us.ihmc.euclid.referenceFrame.ReferenceFrame;
 import us.ihmc.euclid.tuple3D.Vector3D;
 import us.ihmc.euclid.tuple3D.interfaces.Vector3DReadOnly;
 import us.ihmc.euclid.tuple4D.interfaces.QuaternionReadOnly;
 import us.ihmc.graphicsDescription.Graphics3DObject;
 import us.ihmc.graphicsDescription.appearance.YoAppearance;
+import us.ihmc.graphicsDescription.yoGraphics.YoGraphicVector;
 import us.ihmc.sensors.imu.lord.microstrain.MicroStrainData;
 import us.ihmc.sensors.imu.lord.microstrain.MicroStrainUDPPacketListener;
 import us.ihmc.simulationconstructionset.FloatingJoint;
@@ -16,6 +18,8 @@ import us.ihmc.simulationconstructionset.SimulationConstructionSet;
 import us.ihmc.simulationconstructionset.util.RobotController;
 import us.ihmc.yoVariables.registry.YoVariableRegistry;
 import us.ihmc.yoVariables.variable.YoDouble;
+import us.ihmc.yoVariables.variable.YoFramePoint3D;
+import us.ihmc.yoVariables.variable.YoFrameVector3D;
 
 import java.io.IOException;
 
@@ -28,54 +32,19 @@ public class MicroStrain3DMVisualizer
    public static void main(String[] args) throws IOException
    {
       long serialNumber = Long.parseLong(args[0]);
-      final MicroStrainUDPPacketListener listener = MicroStrainUDPPacketListener.createNonRealtimeListener(serialNumber);
 
-      final MicroStrain3DMRobot robot = new MicroStrain3DMRobot();
-      RobotController controller = new RobotController()
-      {
-         YoVariableRegistry registry = new YoVariableRegistry("controller");
+      final MicroStrain3DMRobot robot = new MicroStrain3DMRobot(serialNumber);
 
-         @Override
-         public void initialize()
-         {
-         }
-
-         @Override
-         public YoVariableRegistry getYoVariableRegistry()
-         {
-            return registry;
-         }
-
-         @Override
-         public String getName()
-         {
-            return "updater";
-         }
-
-         @Override
-         public String getDescription()
-         {
-            return getName();
-         }
-
-         @Override
-         public void doControl()
-         {
-            MicroStrainData data = listener.getLatestData(MicroStrainData.MicrostrainFilterType.COMPLIMENTARY_FILTER);
-            robot.set(data.getLinearAcceleration(), data.getAngularRate(), data.getQuaternion());
-            ThreadTools.sleep(1);
-         }
-      };
-
-      robot.setController(controller);
+      robot.setController(robot);
 
       SimulationConstructionSet scs = new SimulationConstructionSet(robot);
       scs.setGroundVisible(false);
+      scs.addYoGraphic(robot.getMagneticNorthGraphicVector());
       scs.startOnAThread();
 
    }
 
-   private static class MicroStrain3DMRobot extends Robot
+   private static class MicroStrain3DMRobot extends Robot implements RobotController
    {
       private static double MS3DM_MASS = 0.0018;
       private static double MS3DM_LENGTH = 0.044;
@@ -100,10 +69,16 @@ public class MicroStrain3DMVisualizer
       private YoDouble zdd = new YoDouble("zdd", registry);
 
       private final RotationMatrix temporaryMatrix = new RotationMatrix();
+      private final MicroStrainUDPPacketListener listener;
+      private final YoFramePoint3D magneticNorthOrigin;
+      private final YoFrameVector3D magneticNorthVector;
+      private final YoGraphicVector magneticNorth;
 
-      private MicroStrain3DMRobot()
+      private MicroStrain3DMRobot(long serialNumber) throws IOException
       {
          super("MicroStrain3DMRobot");
+
+         listener = MicroStrainUDPPacketListener.createNonRealtimeListener(serialNumber);
 
          ms3DM = new FloatingJoint("ms3DM", new Vector3D(0.0, 0.0, 0.0), this);
          ms3DM.setLink(MS3DMLink());
@@ -112,7 +87,48 @@ public class MicroStrain3DMVisualizer
 
          this.setGravity(0.0, 0.0, 0.0);
 
-         addYoVariableRegistry(registry);
+         magneticNorthOrigin = new YoFramePoint3D("magneticNorthOrigin", ReferenceFrame.getWorldFrame(), registry);
+         magneticNorthOrigin.set(0.0, 0.0, 0.0);
+         magneticNorthVector = new YoFrameVector3D("magneticNorthVector", ReferenceFrame.getWorldFrame(), registry);
+         magneticNorthVector.set(1.0, 1.0, 1.0);
+         magneticNorth = new YoGraphicVector("magneticNorthVector", magneticNorthOrigin, magneticNorthVector, 0.5, YoAppearance.Chartreuse(), true);
+      }
+
+      @Override
+      public void initialize()
+      {
+      }
+
+      @Override
+      public YoVariableRegistry getYoVariableRegistry()
+      {
+         return registry;
+      }
+
+      @Override
+      public String getName()
+      {
+         return "updater";
+      }
+
+      @Override
+      public String getDescription()
+      {
+         return getName();
+      }
+
+      @Override
+      public void doControl()
+      {
+         MicroStrainData data = listener.getLatestData(MicroStrainData.MicrostrainFilterType.COMPLIMENTARY_FILTER);
+         this.set(data.getLinearAcceleration(), data.getAngularRate(), data.getQuaternion());
+         magneticNorthVector.set(data.getGeomagneticNorthVector());
+         ThreadTools.sleep(1);
+      }
+
+      public YoGraphicVector getMagneticNorthGraphicVector()
+      {
+         return this.magneticNorth;
       }
 
       private Link MS3DMLink()
