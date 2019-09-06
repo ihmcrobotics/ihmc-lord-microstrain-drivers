@@ -95,6 +95,7 @@ public class MicroStrainUDPPacketListener implements Runnable
             break;
          case CF_NORTH_VECTOR_DESCRIPTOR:
             data.setGeomagneticNorthVector(buffer.getFloat(), buffer.getFloat(), buffer.getFloat());
+            break;
          default:
             log.warning("Unknown field " + Integer.toHexString(descriptor));
             buffer.position(buffer.position() + fieldLength);
