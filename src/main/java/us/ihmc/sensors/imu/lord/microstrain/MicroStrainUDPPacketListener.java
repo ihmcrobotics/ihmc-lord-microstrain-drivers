@@ -213,7 +213,7 @@ public class MicroStrainUDPPacketListener implements Runnable
 
    private static MicroStrainUDPPacketListener create(long serialNumber) throws IOException
    {
-      int port = 50000 + (int) (serialNumber % 1000);
+      int port = 50000 + (int) (serialNumber % 10000);
       log.info("Connecting to IMU on port " + port);
       return new MicroStrainUDPPacketListener(port);
    }
