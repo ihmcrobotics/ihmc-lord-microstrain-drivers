@@ -32,3 +32,20 @@ application {
 tasks.named('run', JavaExec) {
    classpath += ihmc.sourceSet("visualizers").runtimeClasspath
 }
+
+distributions {
+   mipServer {
+      baseName 'microstrain-mip-server'
+      contents {
+         from 'microstrain-mip-server'
+         exclude '.vscode/'
+         exclude 'build/'
+         exclude 'BAMBOO_EXCLUDE_CMAKELISTS'
+      }
+   }
+}
+
+mipServerDistTar {
+   compression = Compression.BZIP2
+   extension = 'tar.bz2'
+}
