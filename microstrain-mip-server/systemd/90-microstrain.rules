@@ -1,0 +1,2 @@
+ACTION=="add",SUBSYSTEM=="tty",ENV{ID_VENDOR}=="Lord_Microstrain",TAG+="systemd",ENV{SYSTEMD_WANTS}+="microstrain@'%E{DEVNAME} %E{ID_SERIAL_SHORT}'.service"
+#ACTION=="add",SUBSYSTEM=="tty",ENV{ID_VENDOR}=="Lord_Microstrain",TAG+="systemd",RUN+="/bin/sh -c 'echo == > /home/dstephen/udev-env.txt; env >> /home/dstephen/udev-env.txt'"
