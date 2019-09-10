@@ -2,13 +2,33 @@ plugins {
    id("us.ihmc.ihmc-build") version "0.16.6"
    id("us.ihmc.ihmc-ci") version "4.25"
    id("us.ihmc.ihmc-cd") version "0.2"
+
+   id 'application'
 }
 
 ihmc {
    group = "us.ihmc"
-   version = "0.1.0"
+   version = "0.0.1"
    openSource = true
 
    configureDependencyResolution()
    configurePublications()
+}
+
+mainDependencies {
+   api("us.ihmc:euclid:0.12.0")
+   api("us.ihmc:ihmc-realtime:1.2.6")
+}
+
+visualizersDependencies {
+   compile ihmc.sourceSetProject("main")
+   compile("us.ihmc:simulation-construction-set:0.12.15")
+}
+
+application {
+   mainClassName = 'us.ihmc.visualizers.sensors.imu.lord.microstrain.MicroStrain3DMVisualizer'
+}
+
+tasks.named('run', JavaExec) {
+   classpath += ihmc.sourceSet("visualizers").runtimeClasspath
 }

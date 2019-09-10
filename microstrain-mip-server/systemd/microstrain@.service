@@ -1,0 +1,10 @@
+[Unit]
+Description=MicroStrain IMU UDP Server
+
+[Service]
+Type=simple
+ExecStart=/usr/local/bin/start-server.sh %I
+#ExecStart=/usr/local/bin/MicrostrainMipServer %I
+
+[Install]
+WantedBy=multi-user.target

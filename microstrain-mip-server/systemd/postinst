@@ -1,0 +1,9 @@
+#!/bin/sh
+
+set -e
+
+systemctl enable microstrain@.service
+systemctl daemon-reload
+
+udevadm control --reload
+udevadm control --reload-rules
