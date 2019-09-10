@@ -37,3 +37,9 @@ The systemd service installs the `microstrain@.service` template unit at `/etc/s
 ## Java classes
 
 This project provides two helper classes, a simple data structure class `MicroStrainData.java` and a helper class for receiving UDP packets and packing them in to the data structure `MicroStrainUDPPacketListener.java`. There are helper methods in the UDP Packet Listener class that take in a serial number and determine which port to receive on using the same logic as the systemd setup. Data is packed without modification, and as such uses the same units and references frames as outlined in the MIP Packet docs linked above. There are helper static fields in the `MicroStrainData` class for use with other IHMC software (e.g. transforms and scale factors).
+
+### Visualizer
+
+There is a test visualizer that uses the above classes you can use to do quick verification of the hardware and software stack. It takes a single unflagged argument, a `long` representing the short serial number of the IMU for determining which port to receive on using similar logic as the systemd service.
+
+You can run the visualizer from the command line using `gradle run --args="1234567"` where you replace 1234567 with the short serial number.
