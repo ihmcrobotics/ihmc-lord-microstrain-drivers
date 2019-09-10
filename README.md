@@ -8,6 +8,31 @@ Currently this project provides a simple Calibration tool for re-zeroing the Gyr
 
 It also provides Java classes for receiving the UDP packets and populating simple Java objects with the data.
 
+# Installing Releases
+
+The Java classes are provided via Maven/Gradle on Bintray at https://bintray.com/ihmcrobotics/maven-release/ihmc-lord-microstrain-drivers. You can add our Maven repository to your buildscript and get to the Java classes that way. For example if you're using Gradle:
+
+```groovy
+repositories {
+    maven {
+        url  "https://dl.bintray.com/ihmcrobotics/maven-release" 
+    }
+}
+
+dependencies {
+    compile 'us.ihmc:ihmc-lord-microstrain-drivers:0.0.1'
+}
+```
+
+The Calibrator and MIP Server releases can be installed from debs, located at https://bintray.com/ihmcrobotics/debs/ihmc-lord-microstrain-drivers/0.0.1.
+
+You can configure your Debian/Ubuntu installation to resolve from that deb repsitory or download the latest release directly:
+
+```bash
+$ curl -L "https://bintray.com/ihmcrobotics/debs/download_file?file_path=pool%2Fi%2Fihmc-lord-microstrain-drivers%2FIHMCMicroStrainDrivers-0.0.1-Linux.deb" -o IHMCMicroStrainDrivers-0.0.1-Linux.deb
+$ sudo dpkg -i IHMCMicroStrainDrivers-0.0.1-Linux.deb
+```
+
 ## A Note on Filter Modes
 
 The 3DM-GX* series IMUs provide two filters, a "Complimentary Filter" (CF) and a non-linear Kalman filter (EKF). The `MicrostrainMipServer` and provided Java classes support both of these modes without modification but not simultaneously, which it is possible to configure the IMU to use. We only support either only EKF or only CF packets. You can "disable" a mode in MIP Monitor by clearing all fields from the packet builder UI under the tab of the filter you don't want to use.
