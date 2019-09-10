@@ -61,3 +61,7 @@ elseif( INIT_UPSTART )
 else()
     message(STATUS "INIT_SYSTEM not set")
 endif()
+
+set(CPACK_GENERATOR "DEB")
+set(CPACK_DEBIAN_PACKAGE_MAINTAINER "dstephen@ihmc.us")
+include(CPack)
