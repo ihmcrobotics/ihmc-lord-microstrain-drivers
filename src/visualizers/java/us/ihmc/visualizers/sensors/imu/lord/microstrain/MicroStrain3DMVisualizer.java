@@ -16,10 +16,10 @@ import us.ihmc.simulationconstructionset.Link;
 import us.ihmc.simulationconstructionset.Robot;
 import us.ihmc.simulationconstructionset.SimulationConstructionSet;
 import us.ihmc.simulationconstructionset.util.RobotController;
-import us.ihmc.yoVariables.registry.YoVariableRegistry;
+import us.ihmc.yoVariables.euclid.referenceFrame.YoFramePoint3D;
+import us.ihmc.yoVariables.euclid.referenceFrame.YoFrameVector3D;
+import us.ihmc.yoVariables.registry.YoRegistry;
 import us.ihmc.yoVariables.variable.YoDouble;
-import us.ihmc.yoVariables.variable.YoFramePoint3D;
-import us.ihmc.yoVariables.variable.YoFrameVector3D;
 
 import java.io.IOException;
 
@@ -54,7 +54,7 @@ public class MicroStrain3DMVisualizer
       private FloatingJoint ms3DM;
       private final RotationMatrix rotation = new RotationMatrix();
 
-      private YoVariableRegistry registry = new YoVariableRegistry("MicroStrain3DMData");
+      private YoRegistry registry = new YoRegistry("MicroStrain3DMData");
 
       private YoDouble yaw = new YoDouble("yaw", registry);
       private YoDouble pitch = new YoDouble("pitch", registry);
@@ -100,7 +100,7 @@ public class MicroStrain3DMVisualizer
       }
 
       @Override
-      public YoVariableRegistry getYoVariableRegistry()
+      public YoRegistry getYoRegistry()
       {
          return registry;
       }
