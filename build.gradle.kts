@@ -26,6 +26,6 @@ visualizersDependencies {
 
 app.entrypoint("MicroStrain3DMVisualizer", "us.ihmc.visualizers.sensors.imu.lord.microstrain.MicroStrain3DMVisualizer")
 
-tasks.register("run", JavaExec::class.java) {
+tasks.register("runVisualizer", JavaExec::class.java) {
    classpath += ihmc.sourceSet("visualizers").runtimeClasspath
 }
