@@ -6,7 +6,7 @@ plugins {
 
 ihmc {
    group = "us.ihmc"
-   version = "0.0.3"
+   version = "0.0.4"
    openSource = true
 
    configureDependencyResolution()
