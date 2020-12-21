@@ -21,7 +21,7 @@ mainDependencies {
 visualizersDependencies {
    api(ihmc.sourceSetProject("main"))
    api("us.ihmc:ihmc-yovariables:0.9.8")
-   api("us.ihmc:simulation-construction-set:0.21.4")
+   api("us.ihmc:simulation-construction-set:0.21.5")
 }
 
 app.entrypoint("MicroStrain3DMVisualizer", "us.ihmc.visualizers.sensors.imu.lord.microstrain.MicroStrain3DMVisualizer")
