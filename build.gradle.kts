@@ -6,7 +6,7 @@ plugins {
 
 ihmc {
    group = "us.ihmc"
-   version = "0.0.4"
+   version = "0.0.5"
    openSource = true
 
    configureDependencyResolution()
@@ -21,7 +21,7 @@ mainDependencies {
 visualizersDependencies {
    api(ihmc.sourceSetProject("main"))
    api("us.ihmc:ihmc-yovariables:0.9.9")
-   api("us.ihmc:simulation-construction-set:0.21.8")
+   api("us.ihmc:simulation-construction-set:0.21.9")
 }
 
 app.entrypoint("MicroStrain3DMVisualizer", "us.ihmc.visualizers.sensors.imu.lord.microstrain.MicroStrain3DMVisualizer")
