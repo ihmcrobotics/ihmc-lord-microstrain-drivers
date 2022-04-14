@@ -15,7 +15,7 @@ ihmc {
 
 mainDependencies {
    api("us.ihmc:euclid:0.17.0")
-   api("us.ihmc:ihmc-realtime:1.4.0")
+   api("us.ihmc:ihmc-realtime:1.5.0")
 }
 
 visualizersDependencies {
