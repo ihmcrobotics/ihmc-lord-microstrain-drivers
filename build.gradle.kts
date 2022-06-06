@@ -20,7 +20,6 @@ mainDependencies {
 
 visualizersDependencies {
    api(ihmc.sourceSetProject("main"))
-   api("us.ihmc:ihmc-yovariables:0.9.12")
    api("us.ihmc:simulation-construction-set:0.21.16")
 }
 
